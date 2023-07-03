@@ -1,0 +1,28 @@
+class Solution:
+    def buddyStrings(self, s: str, g: str) -> bool:
+        a=list(s)
+        b=list(g)
+        c=list(set(a))
+        k=[]
+        if(a==b and len(c)<len(a)):
+            return True
+        elif(len(a)!=len(b)):
+            return False
+        elif(a==b and len(c)==len(a)):
+            return False
+        elif a!=b:
+            for i in range(0,len(a)):
+                if(a[i]!=b[i] ):
+                    k.append(i)
+            if(len(k)==1):
+                return False
+            t=a[k[0]]
+            a[k[0]]=a[k[1]]
+            a[k[1]]=t  
+            if(a==b):
+                return True
+            else:
+                False
+            
+            
+        
