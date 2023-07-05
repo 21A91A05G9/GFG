@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        int z=0,s=0,m=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]==0){
+                z++;
+            }
+            while(z>1){
+                if(nums[s]==0) z--;
+                s++;
+            }
+            cout<<m<<" ";
+            m=max(m,i-s);
+        }
+        return m;
+    }
+};
