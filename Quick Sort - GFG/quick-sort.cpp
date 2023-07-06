@@ -33,10 +33,10 @@ class Solution
        // Your code here
         int i=low,j=high,val=arr[low];
         while(i<j){
-           while(arr[i]<=val and i<=(high-1)){
+           while(arr[i]<=val and i<=(high)){
                i++;
            }
-           while(arr[j]>val and j>=(low+1)){
+           while(arr[j]>val and j>=(low)){
                j--;
            }
            if(i<j)  swap(arr[i],arr[j]);
