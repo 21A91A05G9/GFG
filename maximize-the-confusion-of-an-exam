@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxConsecutiveAnswers(string a, int k) {
+        int s=0,t=0,m1=0,n=a.size();
+        for(int i=0;i<n;i++){
+            if(a[i]=='T') t++;
+            while(t>k){
+                if(a[s]=='T') t--;
+                s++;
+            }
+            m1=max(m1,i-s+1);
+        }
+        int f=0,m2=0;
+        s=0;
+        for(int i=0;i<n;i++){
+            if(a[i]=='F') f++;
+            while(f>k){
+                if(a[s]=='F') f--;
+                s++;
+            }
+            m1=max(m1,i-s+1);
+        }
+        return max(m1,m2);
+    }
+};
