@@ -27,7 +27,7 @@ int main()
 /*You have to complete this function*/
 
 void fun(char str[],int i,int N,string s,vector<string>&v){
-    if(i>=N) {
+    if(i==N) {
         v.push_back(s);
         return;
     }
