@@ -104,9 +104,12 @@ class Solution
          while(t!=null){
              if(mp.get(t.data)==null){
                  mp.put(t.data,t);
-                 Node c=new  Node(t.data);
-                 h.next=c;
+                 Node c=t.next;
+                 t.next=null;
+                 h.next=t;
                  h=h.next;
+                 t=c;
+                 continue;
              }
              t=t.next;
         }
