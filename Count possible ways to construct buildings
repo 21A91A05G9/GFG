@@ -1,0 +1,41 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution{
+	public:
+	int TotalWays(int N)
+	{
+	    // Code here
+	    long long int a=1,b=1,c;
+	    long long int m=1000000007;
+	   if(N==0) return 1;
+	   if(N==1) return 4;
+	    
+	    while(N--){
+	        c=(a%m+b%m)%m;
+	       // long long int sq=(sqrt(x))+c;
+	        a=b;
+	        b=c;
+	        
+	        
+	    }
+	    return ((c%m)*(c%m))%m;
+	}
+};
+
+//{ Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int N;
+		cin >> N;
+		Solution ob;
+		int ans = ob.TotalWays(N);
+		cout << ans <<"\n";
+	}
+	return 0;
+}
+// } Driver Code Ends
