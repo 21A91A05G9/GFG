@@ -9,41 +9,44 @@ class Solution{
     // arr[]: Input Array
     // N : Size of the Array arr[]
     // Function to count inversions in the array.
+    
+
+
     long long int cnt = 0;
-    void mergeSort(long long arr[], int i, int m, int j) {
-        vector<long long>b;
+    void mergeSort(int l, int m, int r, long long arr[]) {
+        vector<long long>v;
         
-        
-        int ind1 = i, ind2 = m;
-        while(ind1<m and ind2 <= j) {
-            if(arr[ind1] <= arr[ind2]) b.push_back(arr[ind1++]);
+        int i=l, j=m;
+        while(i<m and j<=r) {
+            if(arr[i] <= arr[j]) v.push_back(arr[i++]);
             else {
-                b.push_back(arr[ind2++]);
-                cnt += (m-ind1);
+                cnt += (m-i);
+                v.push_back(arr[j++]);
             }
         }
-        while(ind1<m) b.push_back(arr[ind1++]);
-        while(ind2<=j) b.push_back(arr[ind2++]);
+        while(i<m) {
+            v.push_back(arr[i++]);
+        }
+        while(j<=r) {
+            v.push_back(arr[j++]);
+        }
         
-        int k1=0;
-        for(int k=i; k<=j; k++) {
-            arr[k] = b[k1++];
+        for(auto e:v) {
+            arr[l++] = e;
         }
     }
-    void merge(long long arr[], int i, int j) {
-        if(i < j) {
-            int m =(i+j)/2;
-            merge(arr,i,m);
-            merge(arr,m+1,j);
-            mergeSort(arr,i,m+1,j);
-        }
+    void merge(int  i,int j,long long arr[]) {
+        if(i >= j) return;
+        int m = (i+j)/2;
+        merge(i,m,arr);
+        merge(m+1,j,arr);
+        mergeSort(i,m+1,j,arr);
       
     }
     long long int inversionCount(long long arr[], long long N)
     {
         // Your Code Here
-        merge(arr,0,N-1);
-       
+        merge(0,N-1,arr);
         return cnt;
     }
 
