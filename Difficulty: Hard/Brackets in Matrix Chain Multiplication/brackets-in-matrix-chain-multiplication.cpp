@@ -7,40 +7,37 @@ using namespace std;
 // User function Template for C++
 class Solution{
 public:
-    int solve(int i, int j, string &s, int arr[], vector<vector<int>>&dp, vector<vector<string>>&str) {
+    int solve(int i, int j, int p[], string &s, vector<vector<int>>&dp, vector<vector<string>>&str) {
         if(i == j) {
-            s = 'A' + i - 1;
+            s = char(i+64);
             return 0;
         }
         if(dp[i][j] != -1) {
             s = str[i][j];
             return dp[i][j];
         }
-        int maxi = INT_MAX;
-       
+        int mini = INT_MAX;
+        string a, b, ans;
         for(int k=i; k<j; k++) {
+            int step1 = solve(i, k, p, a, dp, str);
+            int step2 = solve(k+1, j, p, b, dp, str);
+            int step3 = p[i-1]*p[k]*p[j] + step1 + step2;
             
-            string a, b;
-            int step1 = arr[i-1]*arr[k]*arr[j];
-            int step2 = solve(i,k,a,arr, dp, str);
-            int step3 = solve(k+1,j, b, arr, dp, str);
-            
-            if( step1 + step2 + step3 < maxi) {
-                s = "(" + a + b + ")";
-                maxi = step1+step2+step3;
-            } 
-           
+            if(step3 < mini) {
+                mini= step3;
+                ans = "(" + a + b + ")";
+            }
         }
+        s = ans;
         str[i][j] = s;
-        return dp[i][j] = maxi;
+        return dp[i][j] = mini;
     }
     string matrixChainOrder(int p[], int n){
         // code here
+        string s;
         vector<vector<int>>dp(n, vector<int>(n, -1));
         vector<vector<string>>str(n, vector<string>(n, ""));
-        string s;
-        int ans = solve(1, n-1, s, p, dp, str);
-        
+        int flag = solve(1, n-1, p, s, dp, str);
         return str[1][n-1];
     }
 };
