@@ -8,50 +8,36 @@ using namespace std;
 // } Driver Code Ends
 // User function template for C++
 
-class Solution{
-    public:
-    void solve(int i, int j, string s, vector<vector<int>>&m, int n, vector<string>&ans, vector<vector<int>>&ch) {
-        
-        if(i==(n-1) and j==(n-1)) {
-            
-            ans.push_back(s);
-            return;
-        }
-        
-        if(ch[i][j] == 1 or m[i][j] == 0) return;
+class Solution {
+  public:
+    void solve(int i, int j, vector<vector<int>>& mat, vector<vector<int>>& ch,
+                string s, vector<string>&v) {
+                    
+        if(i >= mat.size() or j >= mat[0].size()) return;
+        if(mat[i][j] == 0 or ch[i][j] == 1) return;
+        if(i == mat.size()-1 and j == mat[0].size()-1)  v.push_back(s);
         
         ch[i][j] = 1;
         
-        vector<int>row{1,0,-1,0};
-        vector<int>col{0,1,0,-1};
-        
-        vector<char>dir{'D', 'R', 'U', 'L'};
-        
+        vector<int>row{1, -1, 0, 0};
+        vector<int>col{0, 0, 1, -1};
+        vector<char>dir{'D', 'U', 'R', 'L'};
         for(int k=0; k<4; k++) {
-            
-            if((i+row[k]) >=0 and (i+row[k]) < n and (j+col[k]) >= 0 and (j+col[k]) < n) {
-                s += dir[k];
-                
-                solve(i+row[k], j+col[k], s, m, n, ans, ch);
-                s.pop_back();
-            }
-            
+            s += dir[k];
+            solve(i+row[k], j+col[k], mat, ch, s, v);
+            s.pop_back();
         }
-        
         ch[i][j] = 0;
-        return;
+                    
     }
-    vector<string> findPath(vector<vector<int>> &m, int n) {
+    vector<string> findPath(vector<vector<int>> &mat) {
         // Your code goes here
-        vector<string>ans;
-        if(m[0][0] == 0 or m[n-1][n-1] == 0) return ans;
-        vector<vector<int>>ch(n, vector<int>(n, 0));
-        solve(0, 0, "", m, n, ans, ch);
-        return ans;
+        vector<vector<int>>ch(mat.size(), vector<int>(mat[0].size(), 0));
+        vector<string>v;
+        solve(0, 0, mat, ch, "", v);
+        return v;
     }
 };
-
-    
 
 
 //{ Driver Code Starts.
@@ -62,19 +48,20 @@ int main() {
     while (t--) {
         int n;
         cin >> n;
-        vector<vector<int>> m(n, vector<int> (n,0));
+        vector<vector<int>> m(n, vector<int>(n, 0));
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 cin >> m[i][j];
             }
         }
         Solution obj;
-        vector<string> result = obj.findPath(m, n);
+        vector<string> result = obj.findPath(m);
         sort(result.begin(), result.end());
         if (result.size() == 0)
             cout << -1;
         else
-            for (int i = 0; i < result.size(); i++) cout << result[i] << " ";
+            for (int i = 0; i < result.size(); i++)
+                cout << result[i] << " ";
         cout << endl;
     }
     return 0;
