@@ -7,21 +7,23 @@ class Solution{
 		
 
 	public:
-	int maxSumIS(int arr[], int n)  
+	int maxSumIS(int nums[], int n)  
 	{  
 	    // Your code goes here
 	    vector<int>dp(n, 0);
-	    int maxi = arr[0];
-	    dp[0] = arr[0];
+	    int maxi = nums[0];
+	    dp[0] = maxi;
 	    for(int i=1; i<n; i++) {
-	        dp[i] = arr[i];
+	        dp[i] = nums[i];
 	        for(int j=0; j<i; j++) {
-	           if(arr[i] > arr[j]) {
-	               dp[i] = max(dp[i], dp[j]+arr[i]);
-	           }
+	            if(nums[i] > nums[j]) {
+	                dp[i] = max(dp[i], nums[i]+dp[j]);
+	            }
 	        }
-	        maxi = max(dp[i], maxi);
+	        
+	        maxi = max(maxi, dp[i]);
 	    }
+	    
 	    return maxi;
 	}  
 };
