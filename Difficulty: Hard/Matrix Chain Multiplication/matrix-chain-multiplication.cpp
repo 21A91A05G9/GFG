@@ -9,23 +9,42 @@ using namespace std;
 
 class Solution{
 public:
-    int solve(int i, int j, int arr[], vector<vector<int>>&dp) {
+    int solve(int i, int j, string s, int arr[], vector<vector<int>>&dp,
+                vector<vector<string>>&res) {
+        if(i == j) {
+            char ch = char(65+i);
+            s = ch;
+            return 0;
+        }
+        if(dp[i][j] != -1) {
+            s = res[i][j];
+            return dp[i][j];
+        }
         
-        if(i == j) return 0;
-        if(dp[i][j] != -1) return dp[i][j];
-        
+        string a, b, str;
         int maxi = INT_MAX;
         for(int k=i; k<j; k++) {
-            maxi = min(maxi, arr[i-1]*arr[k]*arr[j] + solve(i, k, arr, dp) +
-            solve(k+1, j, arr, dp));
+           int step1 = solve(i, k, a, arr, dp, res);
+           int step2 = solve(k+1, j, b, arr, dp, res);
+           int step3 = arr[i-1]*arr[k]*arr[j];
+           
+           if((step1+step2+step3) < maxi) {
+               maxi = step1+step2+step3;
+               str = '(' + a + b + ')';
+           }
         }
+        s = str;
+        res[i][j] = s;
         return dp[i][j] = maxi;
     }
     int matrixMultiplication(int N, int arr[])
     {
         // code here
+        string s;
+        vector<vector<string>>res(N, vector<string>(N, ""));
         vector<vector<int>>dp(N, vector<int>(N, -1));
-        return solve(1, N-1, arr, dp);
+        // cout<<res[1][N-1];
+        return solve(1, N-1, s, arr, dp, res);
     }
 };
 
