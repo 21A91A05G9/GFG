@@ -10,32 +10,46 @@ using namespace std;
 
 class Solution {
   public:
-    void solve(int i, int j, vector<vector<int>>& mat, vector<vector<int>>& ch,
-                string s, vector<string>&v) {
-                    
-        if(i >= mat.size() or j >= mat[0].size()) return;
-        if(mat[i][j] == 0 or ch[i][j] == 1) return;
-        if(i == mat.size()-1 and j == mat[0].size()-1)  v.push_back(s);
+    void solve(int i, int j, vector<vector<int>>&mat, vector<vector<int>>&ch
+        , string &s, vector<string>&ans) {
         
-        ch[i][j] = 1;
         
-        vector<int>row{1, -1, 0, 0};
-        vector<int>col{0, 0, 1, -1};
-        vector<char>dir{'D', 'U', 'R', 'L'};
+        if(i == (mat.size()-1) && j == (mat[0].size()-1)) {
+            ans.push_back(s);
+            return;
+        } 
+        
+        
+                
+        vector<int>row{-1, 1, 0, 0}, col{0, 0, -1, 1};
+        vector<char>dir{'U', 'D', 'L', 'R'};
+        
         for(int k=0; k<4; k++) {
-            s += dir[k];
-            solve(i+row[k], j+col[k], mat, ch, s, v);
-            s.pop_back();
+            int x = row[k] + i;
+            int y = col[k] + j;
+            
+            if(x >= 0 and x < mat.size() and y >= 0 and y < mat[0].size()
+                and ch[x][y] == 0 and mat[x][y] == 1) {
+                s += dir[k];
+                ch[x][y] = 1;
+                solve(x, y, mat, ch, s, ans);
+                ch[x][y] = 0;
+                s.pop_back();
+            }
+            
+            
         }
-        ch[i][j] = 0;
-                    
     }
     vector<string> findPath(vector<vector<int>> &mat) {
         // Your code goes here
+        vector<string>ans;
+        if(mat[0][0] == 0 || mat[mat.size()-1][mat[0].size()-1] == 0) return ans;
         vector<vector<int>>ch(mat.size(), vector<int>(mat[0].size(), 0));
-        vector<string>v;
-        solve(0, 0, mat, ch, "", v);
-        return v;
+        
+        string s;
+        ch[0][0] = 1;
+        solve(0, 0, mat, ch, s, ans);
+        return ans;
     }
 };
 
