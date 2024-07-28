@@ -8,53 +8,45 @@ using namespace std;
 class Solution
 {
   public:
-    void topoSort(int i, vector<int>&ch, vector<int>adj[], stack<int>&st) {
-      
-        for(auto e: adj[i]) {
-            if(ch[e] == 0) {
-                ch[e] = 1;
-                topoSort(e, ch, adj, st);
-            }
+    void solve(int node, vector<vector<int>>&adj, vector<int>&ch, stack<int>&st) {
+        if(ch[node] == 1) return;
+        ch[node] = 1;
+        for(auto e: adj[node]) {
+            solve(e, adj, ch, st);
         }
-        
-        st.push(i);
-        
+        st.push(node);
     }
-    
-    vector<int> findOrder(int n, int m, vector<vector<int>> p) 
+    vector<int> findOrder(int n, int m, vector<vector<int>> pre) 
     {
         //code here
-        vector<int>adj[n];
-        for(int i=0; i<m; i++) {
-            adj[p[i][0]].push_back(p[i][1]);
-        }
-        
-        
-        vector<int>ch(n, 0);
         stack<int>st;
+        vector<int>ch(n, 0);
+        vector<vector<int>>adj(n);
+        
+        for(auto e: pre) {
+            adj[e[0]].push_back(e[1]);
+        }
         
         for(int i=0; i<n; i++) {
-            if(ch[i] == 0) {
-                ch[i] = 1;
-                topoSort(i, ch, adj, st);
-            }
+            if(ch[i] == 0) solve(i, adj, ch, st);
         }
         
-        vector<int>v, rank(n,0);
-        int r=1;
+        vector<int>r(n, 0), v;
+        int rank=0;
+        
         while(st.size() > 0) {
+            r[st.top()] = rank++;
+            // cout<<st.top();
             v.push_back(st.top());
-            rank[st.top()] = r++;
             st.pop();
         }
         
         for(int i=0; i<n; i++) {
             for(auto e: adj[i]) {
-                if(rank[i] >= rank[e]) return {};
+                if(r[e] <= r[i]) return {};
             }
         }
         reverse(v.begin(), v.end());
-        // for(auto e: v)  cout<<e<<" ";
         return v;
     }
 };
